@@ -36,18 +36,6 @@ public class ProfileAdapter
     private int resId;
     private List<ProfileItem> datalist;
 
-    //승인받을 권한의 목록
-    String[] permission_list = {
-            Manifest.permission.CALL_PHONE,
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.INTERNET,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-
-    HashMap<Integer, UserState> saveData = new HashMap<Integer, UserState>();
-
-
     public ProfileAdapter(Context context, int resId, List<ProfileItem> datalist) {
         this.context = context;
         this.resId = resId;
@@ -68,6 +56,7 @@ public class ProfileAdapter
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         ImageView myImg =holder.myImg;
         myImg.setImageResource(datalist.get(position).profile_img);
+
         //프로필 사진
         myImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +67,7 @@ public class ProfileAdapter
 
         ImageView myMap =holder.myMap;
         myMap.setImageResource(datalist.get(position).profile_map);
+
         //지도
         myMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +80,12 @@ public class ProfileAdapter
 
         TextView nameView =holder.nameView;
         nameView.setText(datalist.get(position).profile_name);
+
         //이름
         nameView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, LocationMap.class);
-                popup();
+                Toast.makeText(context, "이름 누르면 => 사용자 설정 => 아직 안 함",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,8 +96,7 @@ public class ProfileAdapter
         msgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, LocationMap.class);
-                context.startActivity(intent);
+                Toast.makeText(context, "알림명 눌으면 => 알림 변경 => 아직 안 함",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -129,7 +118,7 @@ public class ProfileAdapter
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "전화",Toast.LENGTH_SHORT).show();
-                    runPermission();
+
 
                     Intent intent1 = null;
                     int chk = PermissionChecker.checkSelfPermission(context,
@@ -152,6 +141,20 @@ public class ProfileAdapter
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "영상통화",Toast.LENGTH_SHORT).show();
+
+                        Intent intent = null;
+                        int chk = PermissionChecker.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
+                        if(chk== PackageManager.PERMISSION_GRANTED){
+                            intent = new Intent(Intent.ACTION_CALL,
+                                    Uri.parse("tel:01072971287"));
+                            intent.putExtra("andorid.phone.extra.calltype",0);
+                            //intent.putExtra("videocall",true);
+                        }else{
+                            Log.d("tel","실패");
+                            return;
+                        }
+                    context.startActivity(intent);
+
 
                 }
             });
@@ -211,22 +214,6 @@ public class ProfileAdapter
         context.startActivity(intent);
     }
 
-    //권한을 체크할 메서드 : 승인처리
-    public void runPermission(){
-        //하위버전이면 실행되지 않도록 처리
-        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.M){
-            return; // 이러면 그냥 종료
-        }
-        //모든 권한을 셀프체크  permission_list에서 하나씩 꺼내서 작업
-        for(String permission:permission_list){
-            int chk = context.checkCallingOrSelfPermission(permission);
-            //권한 셀프 체크가 안되는 경우에
-            if(chk== PackageManager.PERMISSION_DENIED){
-                requestPermissions(permission_list,0);
-                break;
-            }
 
-        }
-    }
 
 }
