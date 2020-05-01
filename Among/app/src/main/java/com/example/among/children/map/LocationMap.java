@@ -234,6 +234,7 @@ public class LocationMap extends AppCompatActivity
             myLocationMarker.position(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
         }
     }
+
     private void showMyFriendLocationMarker(Location myLocation) {
         if (friendMarker1 == null) {
             String msg = "● 짱아\n"

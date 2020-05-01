@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.PermissionChecker;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.among.R;
 import com.example.among.children.map.LocationMap;
 
-
-import java.util.HashMap;
 import java.util.List;
 
 public class ProfileAdapter
@@ -126,7 +122,7 @@ public class ProfileAdapter
                     if(chk==PackageManager.PERMISSION_GRANTED){
                         //권한 승락이 된 상태                           //5554번에서 5556번 전화하기
                         Log.d("tel","성공");
-                        intent1 = new Intent(Intent.ACTION_CALL,Uri.parse("tel:010-8231-0841"));
+                        intent1 = new Intent(Intent.ACTION_CALL,Uri.parse("tel:010-1234-1234"));
 
                     }else {
                         Log.d("tel","실패");
@@ -143,12 +139,13 @@ public class ProfileAdapter
                     Toast.makeText(context, "영상통화",Toast.LENGTH_SHORT).show();
 
                         Intent intent = null;
-                        int chk = PermissionChecker.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
+                        int chk = PermissionChecker.checkSelfPermission(context,
+                                Manifest.permission.CALL_PHONE);
                         if(chk== PackageManager.PERMISSION_GRANTED){
                             intent = new Intent(Intent.ACTION_CALL,
-                                    Uri.parse("tel:01072971287"));
+                                    Uri.parse("tel:010-1234-1234"));
                             intent.putExtra("andorid.phone.extra.calltype",0);
-                            //intent.putExtra("videocall",true);
+                            intent.putExtra("videocall",true);
                         }else{
                             Log.d("tel","실패");
                             return;
