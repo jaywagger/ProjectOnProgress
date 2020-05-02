@@ -38,7 +38,7 @@ public class FCMService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        setMyLocation(location);
+        //setMyLocation(location);
         //도착한 메시지가 있다면...
         if(remoteMessage.getNotification()!=null){
             //메시지를 추출한다. 메인쓰레드를 얻어와서 작업해야 한다.
